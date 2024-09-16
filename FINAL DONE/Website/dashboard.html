@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="theme-color" content="#486189">
+      <title>IoT of EC Process</title>
+      <!-- font kanit link  -->
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter">
+
+      <!-- custom css file link  -->
+      <link rel="stylesheet" href="./css/style.css">
+
+      <!-- font awesome cdn link  -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+      <!-- Include Chart.js -->
+      <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+      <link rel="manifest" href="manifest.json">
+      <link rel="icon" href="logo.png" type="image/icon type">
+      <link rel="apple-touch-icon" href="images/logo192.png">
+      <script src="js/index.js"></script>
+
+      
+        
+
+
+    </head>
+    <body>
+        <header class="navbar" id="navbar">
+
+            <div class="logo-and-welcome">
+                <a href="index.html" class="logo"><img src="logo.png" alt="Logo"></a>
+            </div>
+            <ul>
+                <li>
+                    <a href="index.html">
+                        <div class="icon-inside">
+                            <i class="fa-solid fa-gamepad"></i>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="dashboard.html">
+                        <div class="icon-inside">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            
+
+        </header>
+
+        
+    <!-- DASHBOARD -->
+    <section class="history" id="dashboard">
+      <h1>DASHBOARD</h1>
+      <p>View your data from your previous activity</p>
+      <div class="switch-description" id="userName"></div>
+
+        <div class="ul">
+            <li>
+                <a>
+                    <div class="name">
+                        <input type="date" name="" max="" id="fromDate">
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a>
+                    <div class="name">
+                        TO
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a>
+                    <div class="name">
+                        <input type="date" name="" max="" id="toDate">
+                    </div>
+                </a>
+            </li>
+        </div>
+
+        <div class="chart">
+            <li>
+                <a href="">
+                    <div class="chartCard">
+                        <div class="chartBox">
+                            <canvas id="myChart"></canvas>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </div>
+
+        <div class="table">
+            <li>
+                <a>
+                    <div class="summary"><h2>SUMMARY</h2></div>
+                </a>
+            </li>
+            <li>
+                <a>
+                    <table id = customers>
+                        <thead>
+                        <tr>
+                            <th>DATE</th>  
+                            <th>RUN</th>
+                            <th>CYCLE</th>
+                            <th>VOLTAGE</th>
+                            <th>TREATMENT TIME</th>
+                            <th>INITIAL TURBIDITY LEVEL</th>
+                            <th>FINAL TURBIDITY LEVEL</th>
+                        </tr>
+                        </thead>
+                        <tbody id="dataTable">
+                        <!-- Data will be populated here -->
+                        </tbody>
+                        
+                    </table>
+                </a>
+            </li>
+        </div>
+    </section>
+
+    <!-- custom js file link  -->
+    <script type="module" src="js/firebase.js"> 
+      
+    </script>
+    <script type="module">
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+      import { getDatabase, set, ref, get, child, update} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+      import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+      
+      const firebaseConfig = {
+      apiKey: "AIzaSyDG_NeXS3omKKF5bIMT9ebLkZsVb86drCw",
+      authDomain: "electrocoagulation-system.firebaseapp.com",
+      databaseURL: "https://electrocoagulation-system-default-rtdb.firebaseio.com",
+      projectId: "electrocoagulation-system",
+      storageBucket: "electrocoagulation-system.appspot.com",
+      messagingSenderId: "906878973597",
+      appId: "1:906878973597:web:c410e43d2160e3ea4fc674",
+      measurementId: "G-D7K8L0ZFKF"
+      };
+
+  // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const auth = getAuth(app);
+
+      const userName = document.getElementById("userName");
+
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          const currentUser = user.uid;
+          const email = user.email;
+          
+          userName.innerText = user.email;
+          fetchDataByDateRange(user.uid);
+          console.log("Test", user.uid);
+          // ...
+        } else {
+          // User is signed out
+          // ...
+        }
+      });
+
+      function rangeTime(timeRange){
+        let xAxisType, timeUnit, displayFormat;
+        if (timeRange <= 1) {
+            // If time range is less than or equal to 1 day, show hours
+            xAxisType = 'time';
+            timeUnit = 'hour';
+            displayFormat = 'HH'; // Display only the hour part
+        } else {
+            // If time range is more than 1 day, show days
+            xAxisType = 'time';
+            timeUnit = 'day';
+            displayFormat = 'mm/dd'; // Display full date
+        }
+        return timeUnit; // Return timeUnit value
+      }
+
+      // Function to fetch and display sorted data based on date range
+      function fetchDataByDateRange(uid) {
+        // Get the fromDate and toDate values from date picker inputs
+        var fromDateInput = document.getElementById('fromDate');
+        var toDateInput = document.getElementById('toDate');
+        console.log("From Date Input:", fromDateInput.value);
+        console.log("To Date Input:", toDateInput.value);
+        
+        // Check if fromDate and toDate inputs have valid values
+        if (!fromDateInput.value || !toDateInput.value) {
+            console.error('Invalid date input');
+            return;
+        }
+
+        // Convert fromDate and toDate values to valid date objects
+        var fromDate = new Date(fromDateInput.value);
+        var toDate = new Date(toDateInput.value);
+
+        // Check if fromDate is after toDate
+        if (fromDate > toDate) {
+            console.error('Invalid date range');
+            return;
+        }
+
+        // Convert the fromDate and toDate to strings in the format "MM/DD/YYYY, HH:mm:ss"
+        var formattedFromDate = new Date(fromDate).toISOString();
+        var formattedToDate = new Date(toDate).toISOString();
+
+        console.log("From Date Input:", formattedFromDate);
+        console.log("To Date Input:", formattedToDate);
+        
+        const timeRange = Math.abs(toDate - fromDate) / (1000 * 60 * 60 * 24); // Calculate time range in days
+        console.log(timeRange);
+
+        rangeTime(timeRange);
+
+        const timeUnit = rangeTime(timeRange);
+
+        fetchData(uid, formattedFromDate, formattedToDate);
+
+      }
+
+      function fetchData(uid, formattedFromDate, formattedToDate) {
+        const adminId = "gqUYWuveBZc0WIG8fFWSmQlMQDC3";
+        let twoMainSupplyRef;
+
+        if (uid !== adminId) {
+            twoMainSupplyRef = ref(db, `/users/${uid}/dataSave`);
+        } else {
+            twoMainSupplyRef = ref(db, `/users/dataSave`);
+        }
+
+        console.log(twoMainSupplyRef);
+        console.log("SDAHDS", uid);
+
+        if (twoMainSupplyRef) { // Check if twoMainSupplyRef is defined
+            get(twoMainSupplyRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    const filteredData = {};
+
+                    Object.entries(data).forEach(([key, entry]) => {
+                        Object.entries(entry).forEach(([timestamp, values]) => {
+                            if (timestamp >= formattedFromDate && timestamp <= formattedToDate) {
+                                if (!filteredData[key]) {
+                                    filteredData[key] = {};
+                                }
+                                filteredData[key][timestamp] = values;
+                            }
+                        });
+                    });
+
+                    displayData(filteredData);
+                } else {
+                    console.log('No data available');
+                }
+            }).catch((error) => {
+                console.error('Error fetching data:', error);
+            });
+        } else {
+            console.log("Invalid reference");
+        }
+      }
+
+
+      // Function to display data in table and chart
+      function displayData(data, timeUnit) {
+        const labels = [];
+        const afterTurbidityLevels = [];
+        const beforeTurbidityLevels = [];
+
+        // Clear existing table rows
+        const tableBody = document.getElementById('dataTable');
+        tableBody.innerHTML = '';
+
+
+
+        // Populate table and chart data
+        Object.values(data).forEach(entry => {
+          Object.entries(entry).forEach(([timestamp, values]) => {
+            // Convert timestamp to Date object
+            const date = new Date(values.dateSave); // Assuming 'dateSave' contains the correct date string
+            labels.push(date);
+
+            afterTurbidityLevels.push(values.afterTurbidityLevel);
+            beforeTurbidityLevels.push(values.beforeTurbidityLevel);
+
+            // Calculate percentages
+            const afterPercentage = ((values.beforeTurbidityLevel - values.afterTurbidityLevel)/values.beforeTurbidityLevel)*100;
+            const beforePercentage = 100;
+          
+            // Add data to table
+            const tableRow = document.createElement('tr');
+            tableRow.innerHTML = `
+              <td>${values.dateSave}</td>
+              <td>${values.run}</td>
+              <td>${values.cycle}</td>
+              <td>${values.voltage}</td>
+              <td>${values.treatmentTime}</td>
+              <td>
+                <div class="progress-bar">
+                  <span class="html" style="width: ${beforePercentage}%;">${values.beforeTurbidityLevel} NTU</span>
+                </div>
+              </td>
+              <td>
+                <div class="progress-bar">
+                  <span class="css" style="width: ${afterPercentage}%;">${values.afterTurbidityLevel} NTU</span>
+                </div>
+              </td> 
+            `;
+            tableBody.appendChild(tableRow);
+          });
+        });
+        
+        rangeTime();
+        // Update chart data
+        const myChart = new Chart(document.getElementById('myChart').getContext('2d'), {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'FINAL',
+              data: afterTurbidityLevels,
+              backgroundColor: 'rgba(54, 162, 235, 0.2)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 1
+            }, {
+              label: 'INITIAL',
+              data: beforeTurbidityLevels,
+              backgroundColor: 'rgba(81, 57, 24, 0.2)',
+              borderColor: ' rgba(81, 57, 24, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              x: {
+                type: 'time',
+                time: {
+                  tooltipFormat: 'm d, yyyy h:mm a',
+                  unit: timeUnit,
+                  displayFormats: {
+                    day: 'dd' // Display only the hour part
+                  }
+                },
+                ticks: {
+                  autoSkip: true,
+                  maxTicksLimit: 7, // Limit the maximum number of ticks displayed on the x-axis
+                  maxRotation: 0, // Rotate the labels
+                  minRotation: 0
+                },
+                unitStepSize: 2 // Show labels once every two hours
+              },
+              y: {
+                beginAtZero: true
+              }
+            },
+            plugins:{
+              tooltip:{
+                label: function(tooltipItem, data){
+                  console.log(tooltipItem);
+                  console.log(data);
+                  var label = myChart.data.labels[tooltipItem.dataIndex];
+                  var value = myChart.data.datasets[tooltipItem.datasetIndex].data[tooltipItem.dataIndex];
+
+                  return label + ';' + value;
+                }
+              }
+            }
+          }
+        });
+      }
+
+      
+      
+
+        
+
+
+
+    // Attach event listeners to date picker inputs
+    document.getElementById('fromDate').addEventListener('change', function() {
+        if (document.getElementById('fromDate').value && document.getElementById('toDate').value) {
+          const user = auth.currentUser;
+            if (user) {
+                fetchDataByDateRange(user.uid);
+            }
+        }
+      });
+
+      document.getElementById('toDate').addEventListener('change', function() {
+        if (document.getElementById('fromDate').value && document.getElementById('toDate').value) {
+          const user = auth.currentUser;
+            if (user) {
+                fetchDataByDateRange(user.uid);
+            }
+        }
+      });
+            
+      var fromDate;
+      $('#fromDate').on('change', function(){
+        fromDate = $(this).val();
+        $('#toDate').prop('min', function(){
+          return fromDate;
+        })
+      });
+      
+    </script>
+    
+    </body>
+</html>
+

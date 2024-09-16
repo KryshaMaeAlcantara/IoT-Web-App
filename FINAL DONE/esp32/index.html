@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>IoT of Electrocoagulation</title>
+        <!-- font kanit link  -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter">
+
+        <!-- font awesome cdn link  -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <style>
+           @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+            *{
+                margin: 0;
+                padding: 0;
+                font-family: 'Poppins',sans-serif;
+            }
+
+            body{
+                padding-top: 50px;
+                background-color: #eeeeee;
+            }
+
+            /*----------------------------- HEADER -----------------------------*/
+            .navbar {
+                box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.400);
+                display: block;
+                justify-content: space-between;
+                align-items: center;
+                color: #F3E5CE;
+                position: fixed;
+                top: 0;
+                width: 100%;
+                z-index: 1000;
+                transition: background-color 0.3s ease-in-out;
+            }
+
+            .navbar ul{
+                background-color: white;
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                align-items: center;
+            }
+
+            .navbar ul li{
+                list-style: none;
+                text-align: center;
+                justify-content: center;
+                flex-wrap: wrap;
+                align-items: center;
+                display: block;
+                border-right: 1px solid rgba(0, 0, 0, 0.1);
+            }
+
+            .navbar ul li a{
+                padding: 0 50px;
+                display: block;
+            }
+
+            .navbar ul li:last-child{
+                border-right: none;
+            }
+
+            .navbar ul li a .icon-inside{
+                width: 35px;
+                height: 35px;
+                color: #486189;
+                font-size: 28px;
+                text-align: center;
+                overflow: hidden;
+                margin: 0 auto 10px;
+                margin-top: 15px;
+            }
+
+            .navbar ul li a .icon-inside .fa{
+                width: 100%;
+                height: 100%;
+                line-height: 40px;
+                display: inherit;
+                font-size: 34px;
+
+            }
+
+            .navbar ul li a .icon-inside .fa-gamepad{
+                margin-right: 100%;
+            }
+
+            .logo-and-welcome {
+                display: flex;
+                flex-direction: column; /* Align children vertically */
+                align-items: center; /* Center items horizontally */
+                background-color: #486189;
+                padding: 5px;
+                justify-content: center;
+                text-align: center;
+            }
+
+            .logo img {
+                width: 50px; /* Adjust size as needed */
+                height: 50px; /* Adjust size as needed */
+            }
+
+            nav .fa{
+                display: none;
+            }
+
+            .fa {
+                margin-left: 20px;
+                margin-right: 30px;
+            }
+
+            .sticky {
+                position: sticky; /* Make the navbar sticky */
+                top: 0; /* Stick it to the top of the page */
+                /* Add other desired styles for the sticky state, like background color, etc. */
+            }
+
+            @media(max-width: 700px){
+
+                nav a{
+                    display: block;
+                    padding: 30px;
+                }
+
+                nav{
+                    position: absolute;
+                    background: #486189;
+                    height: 100vh;
+                    width: 200px;
+                    top: 0;
+                    right: -200px;
+                    text-align: left;
+                    z-index: 2;
+                    transition: 1s;
+                }
+                
+                nav .fa{
+                    display: block;
+                    color: #F3E5CE;
+                    margin: 10px;
+                    font-size: 22px;
+                    cursor: pointer;
+                }
+
+                .sticky{
+                    width: 657.4px;
+                }
+                
+            }
+
+
+            /*----------------------------- TITLE -----------------------------*/
+            .controller{
+                width: 80%;
+                margin: auto;
+                text-align: center;
+                padding: 50px;
+                padding-top: 100px;
+            }
+
+            h1{
+                font-size: 36px;
+                color: #513918;
+            }
+
+            p{
+                color: #513918;
+                font-size: 14px;
+                font-weight: 300;
+                line-height: 22px;
+                padding: 10px;
+            }
+
+            /*----------------------------- SWITCH -----------------------------*/
+            .switch {
+                position: relative;
+                display: inline-block;
+                width: 100px; /* Adjust width as needed */
+                height: 50px; /* Adjust height as needed */
+            }
+            
+            .switch input { 
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+            
+            .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #F3E5CE;
+                -webkit-transition: .4s;
+                transition: .4s;
+                box-shadow: 0px 7px 4px 0px rgba(0, 0, 0, 0.25) inset, 0px 1px 13px 0px rgba(0, 0, 0, 0.25) inset, 0px 4px 4px 0px rgba(255, 255, 255, 0.94), 0px -3px 4px 0px rgba(0, 0, 0, 0.25);
+            }
+            
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 42px;
+                width: 42px;
+                left: 4px;
+                bottom: 4px;
+                background-color: #D2B488;
+                -webkit-transition: .4s;
+                transition: .4s;
+                box-shadow: 3px 1px 4px 0px rgba(255, 255, 255, 0.61) inset, 0px -2px 4px 0px #867459 inset;
+                filter: drop-shadow(4px 7px 8px rgba(0, 0, 0, 0.25)) drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+            }
+            
+            input:checked + .slider {
+                background-color: #D2B488;
+                box-shadow: 0px 7px 4px 0px rgba(0, 0, 0, 0.25) inset, 0px 1px 13px 0px rgba(0, 0, 0, 0.25) inset, 0px 4px 4px 0px rgba(255, 255, 255, 0.94), 0px -3px 4px 0px rgba(0, 0, 0, 0.25);
+            }
+            
+            input:focus + .slider {
+                box-shadow: 0 0 1px #2196F3;
+            }
+            
+            input:checked + .slider:before {
+                -webkit-transform: translateX(26px);
+                -ms-transform: translateX(26px);
+                transform: translateX(49px);
+            }
+            
+            /* Thumb color for ON state */
+            input:checked + .slider:before {
+                background-color: #F3E5CE; /* Thumb color for ON state */
+                box-shadow: 3px 1px 4px 0px rgba(255, 255, 255, 0.61) inset, 0px -2px 4px 0px #867459 inset;
+            }
+            
+            /* Rounded sliders */
+            .slider.round {
+                border-radius: 34px;
+            }
+            
+            .slider.round:before {
+                border-radius: 50%;
+            }
+
+            /* Add styling for the label and description */
+            .switch-label {
+                display: block;
+                margin-bottom: 5px; /* Adjust spacing between the label and the switch */
+            } 
+
+            .switch-description {
+                display: block;
+                font-size: 12px;
+                padding: 5px;
+            }
+
+            .switches{
+                padding: 10px;
+            }
+
+            .mainSwitches {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding-top: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+            }
+
+
+            /*----------------------------- DATA -----------------------------*/
+            .datas p {
+                display: inline-block; /* or use display: inline-block; */
+                margin-right: -15px; /* Adjust margin between <p> elements */
+                text-align: right; /* Align text to the left */
+                color: #1a1a1a;
+            }
+
+            #myTable { 
+                width:100%;
+                table-layout: fixed;
+            }
+            
+            .beforeTurblvl{
+                justify-content: center;
+                display: block;
+            }
+            
+            .title{
+                justify-content: center;
+                display: flex;
+            }
+            
+            .input-details{
+                justify-content: center;
+                display: flex;
+            }
+            
+            .afterTurblvl{
+                justify-content: center;
+                display: block;
+            }
+
+
+            .group4 {
+                display: flex;
+                text-align: left; /* Align text to the left */
+                color: #1a1a1a;
+                margin-right: 0px; /* Adjust margin between elements */
+            }
+
+            .group4 span{
+                font-size: 15px;
+                color: #1a1a1a;
+            }
+
+            .group4 .inputs{
+                margin: 0;
+                color: #1a1a1a;
+            }
+
+            .inputs #dnt{
+                width: 100%;
+            }
+
+            .inputs {
+                width: 25%;
+                margin-right: 5%;
+                border: none;
+                background-color: transparent;
+                border-bottom: 2px solid #585858;
+                text-align: center;
+            }
+
+            #data {
+                text-align: center;
+            }
+
+            #data .data-container {
+                display: flex;
+                justify-content: space-between;
+                padding-top: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            #data .dat {
+                width: 100%;
+                min-width: 250px;
+                padding: 10px 12px;
+                border-radius: 25px;
+                box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.1);
+                margin: 15px 0;
+                transition: 0.2s ease;
+                position: relative;
+                background-color: white;
+            }
+
+            #data .dat .des {
+                text-align: center;
+                padding: 10px 0;
+            }
+
+            #group2 {
+                text-align: center;
+            }
+
+            #group2 .data-container {
+                display: flex; /* Use flexbox for flexible layout */
+                justify-content: center; /* Center vertically within the container */
+                align-items: center;
+            }
+            
+            #group2 .dat {
+                width: 100%;
+                min-width: 250px;
+                padding: 10px 12px;
+                border-radius: 25px;
+                box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.1);
+                margin: 15px 0;
+                transition: 0.2s ease;
+                position: relative;
+                background-color: white;
+            }
+
+            #group2 .dat .des {
+                text-align: center;
+                padding: 10px 0;
+            }
+
+            #group2 .turblvl p {
+                text-align: center; /* Center "TURBIDITY LEVEL:" text */
+            }
+
+            #group2 .turblvl .beforeTurblvl,
+            #group2 .turblvl .afterTurblvl {
+                display: flex; /* Use flexbox for horizontal alignment */
+                justify-content: space-between; /* Align labels and inputs horizontally */
+                align-items: center; /* Align labels and inputs vertically */
+            }
+
+            #group3 {
+                text-align: center;
+            }
+
+            #group3 .data-container {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            #group3 .dat {
+                width: 100%;
+                min-width: 250px;
+                padding: 10px 12px;
+                border-radius: 25px;
+                box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.1);
+                margin: 15px 0;
+                transition: 0.2s ease;
+                position: relative;
+                background-color: white;
+            }
+
+            #group3 .dat .des {
+                text-align: center;
+                padding: 10px 0;
+            }
+
+
+            /*----------------------------- ALERTS -----------------------------*/
+            .warning{
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+                color: #FFE1E2;
+                font-size: 20px;
+                margin: 0px 50px;
+            }
+
+            .warning-symbol {
+                display: flex;
+                align-items: center;
+            }
+
+            .warning-symbol h5{
+                margin-left: 10px;
+                font-size: 20px;
+            }
+
+            .warning p{
+                color: #FFE1E2;
+            }
+
+            .warning .fa-circle-exclamation {
+                margin-left: 0px;
+                font-size: 50px;
+            }
+
+            .warning-text h5,
+            .warning-text p {
+                margin: -15px 0px; /* Adjust margins as needed */
+            }
+
+            .warning-text{
+                flex-grow: 1;
+                margin-top: 5px;
+            }
+
+            #maintenance {
+                text-align: center;
+            }
+
+            #maintenance .data-container {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            #maintenance .dat {
+                width: 100%;
+                min-width: 250px;
+                border-radius: 10px;
+                padding:12px;
+                box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.1);
+                transition: 0.2s ease;
+                position: relative;
+                background-color: red;
+                /*
+                border-left: 4px solid #FE485A;
+                background-color: #FFE1E2;
+                */
+            }
+
+            #maintenance .dat .des {
+                text-align: center;
+            }
+
+            /* Adjustments for smaller screens */
+            @media (max-width: 700px) {
+                .warning {
+                    font-size: 16px; /* Decrease font size */
+                    margin: 0 20px; /* Reduce margin */
+                }
+
+                .warning-symbol h5 {
+                    font-size: 16px; /* Decrease font size */
+                }
+
+                .warning .fa-circle-exclamation {
+                    font-size: 40px; /* Decrease font size */
+                }
+                
+                .warning-symbol {
+                    margin-bottom: 25px;
+                }
+
+                .warning-text h5,
+                .warning-text p {
+                    font-size: 16px; /* Decrease font size */
+                    margin: -10px 0; /* Adjust margins */
+                }
+            }
+
+
+            #alert {
+                text-align: center;
+                margin: 3px;
+            }
+
+            #alert  .data-container {
+                justify-content: space-between;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            #alert  .dat {
+                width: 100%;
+                min-width: 250px;
+                border-radius: 10px;
+                padding:12px;
+                box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.1);
+                transition: 0.2s ease;
+                position: relative;
+                background-color: #F3E5CE;
+                /*
+                border-left: 4px solid #FE485A;
+                background-color: #FFE1E2;
+                */
+            }
+
+            #alert  .dat .des {
+                text-align: center;
+            }
+
+            .alert p{
+                font-weight: bold;
+                color: #51391889;
+            }
+
+
+            /*----------------------------- MODE OF OPERATION -----------------------------*/
+            .circle {
+                width: 50px; /* Adjust the width and height as needed */
+                height: 50px; /* Same as width to make it a circle */
+                background-color: #D2B488;
+                border-radius: 50%; /* Makes the container circular */
+                display: flex;
+                justify-content: center;
+                color: white;
+                align-items: center;
+                margin: 15px;
+                box-shadow: 3px 1px 4px 0px rgba(255, 255, 255, 0.61) inset, 0px -2px 4px 0px #867459 inset;
+                filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.25)) drop-shadow(4px 7px 8px rgba(0, 0, 0, 0.25));
+                cursor: pointer;
+            }
+
+            .voltButton{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .number{
+                width: 50px;
+                border-radius: 50px;
+                height: 30px;
+                display: flex;
+                border: 2px solid #D2B488;
+                color: #486189;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .timeButton{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            #buttons {
+                display: flex;
+                text-align: center;
+                justify-content: center;
+            }
+
+            #buttons .buttons-container {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+                margin-right: 20px;
+            }
+            
+            #buttons .but {
+                width: 23%;
+                min-width: 250px;
+                padding: 10px 12px;
+                border-radius: 25px;
+                cursor: pointer;
+                box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.1);
+                margin: 15px 0;
+                transition: 0.2s ease;
+                position: relative;
+                background-color: white;
+            }
+
+            #buttons .but .des {
+                text-align: center;
+                padding: 10px 0;
+            }
+
+            @media(max-width: 700px){
+
+                #buttons {
+                    display: block;
+                    text-align: center;
+                }
+                
+            }
+            /*----------------------------- SUBMIT BUTTONS -----------------------------*/
+            .submitButtons{
+                justify-content: center;
+                text-align: center;
+                flex-wrap: wrap;
+                display: flex;
+            }
+
+            .cycleButton{
+                height: 50px;
+                width: 160px;
+                background-color: #D2B488;
+                border-radius: 0%; /* Makes the container circular */
+                display: flex;
+                cursor: pointer;
+                justify-content: center;
+                color: white;
+                align-items: center;
+                margin: 15px;
+                border-style: none;
+                box-shadow: 3px 1px 4px 0px rgba(255, 255, 255, 0.61) inset, 0px -2px 4px 0px #867459 inset;
+                filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.25)) drop-shadow(4px 7px 8px rgba(0, 0, 0, 0.25));
+            }
+
+            .runButton{
+                height: 50px;
+                width: 160px;
+                background-color: #D2B488;
+                border-radius: 0%; /* Makes the container circular */
+                display: flex;
+                justify-content: center;
+                cursor: pointer;
+                color: white;
+                align-items: center;
+                margin: 15px;
+                border-style: none;
+                box-shadow: 3px 1px 4px 0px rgba(255, 255, 255, 0.61) inset, 0px -2px 4px 0px #867459 inset;
+                filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.25)) drop-shadow(4px 7px 8px rgba(0, 0, 0, 0.25));
+            }
+
+            /*----------------------------- ACTION BUTTONS -----------------------------*/
+            button{
+                width: 50px; /* Adjust the width and height as needed */
+                height: 50px; /* Same as width to make it a circle */
+                background-color: #D2B488;
+                border-radius: 50%; /* Makes the container circular */
+                display: flex;
+                justify-content: center;
+                color: white;
+                align-items: center;
+                border-style: none;
+                margin: 15px;
+                font-size: 20px;
+                box-shadow: 3px 1px 4px 0px rgba(255, 255, 255, 0.61) inset, 0px -2px 4px 0px #867459 inset;
+                filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.25)) drop-shadow(4px 7px 8px rgba(0, 0, 0, 0.25));
+                cursor: pointer;
+            }
+
+            .controls{
+                display: inline-block;
+                justify-content: space-between;
+                padding-top: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .actionBtns{
+                display: flex;
+            }
+
+            .butts{
+                padding: 15px;
+            }
+
+            .controls h3{
+                font-size: 25px;
+                color: #513918;
+            }
+
+            .startbutton .active {
+                background-color: #F3E5CE;
+                color: #D2B488;
+            }
+
+            .pausebutton .active {
+                background-color: #F3E5CE;
+                color: #D2B488;
+            }
+
+            .stopbutton .active {
+                background-color: #F3E5CE;
+                color: #D2B488;
+            }
+
+            .rating {
+                font-weight: bold;
+                padding: 2px;
+                margin-left: 5px;
+                width: 40%;
+                text-align: center;
+            }
+            
+            /* Add styles for different rating colors */
+            .rating.good {
+                background-color: #ECD6B4; /* Green for GOOD */
+                color: black; /* White text for contrast */
+            }
+            
+            .rating.fair {
+                background-color: #D2B488; /* Orange for FAIR */
+                color: black; /* Black text for contrast */
+            }
+            
+            .rating.bad {
+                background-color: #513918; /* Red for BAD */
+                color: white; /* White text for contrast */
+            }
+
+            .after-rating {
+                font-weight: bold;
+                padding: 2px;
+                margin-left: 5px;
+                width: 40%;
+                text-align: center;
+            }
+            
+            /* Add styles for different rating colors */
+            .after-rating.good {
+                background-color: #ECD6B4; /* Green for GOOD */
+                color: black; /* White text for contrast */
+            }
+            
+            .after-rating.fair {
+                background-color: #D2B488; /* Orange for FAIR */
+                color: black; /* Black text for contrast */
+            }
+            
+            .after-rating.bad {
+                background-color: #513918; /* Red for BAD */
+                color: white; /* White text for contrast */
+            }
+
+            .phlvl{
+                display: flex;
+                
+            }
+            .ph-rating {
+                font-weight: bold;
+                padding: 2px;
+                margin-left: 5px;
+                text-align: center;
+            }
+            
+            /* Add styles for different rating colors */
+            .ph-rating.good {
+                background-color: #ECD6B4; /* Green for GOOD */
+                color: black; /* White text for contrast */
+            }
+            
+            .ph-rating.fair {
+                background-color: #D2B488; /* Orange for FAIR */
+                color: black; /* Black text for contrast */
+            }
+            
+            .ph-rating.bad {
+                background-color: #513918; /* Red for BAD */
+                color: white; /* White text for contrast */
+            } 
+        </style>
+
+
+    </head>
+    <body>
+<!----------------------------------------- NAV BAR ----------------------------------------------->        
+        <header class="navbar" id="navbar">
+
+            <div class="logo-and-welcome">
+                <a href="index (2).html" class="logo"><img src="logo.png" alt="Logo"></a>
+            </div>
+            <ul>
+                <li>
+                    <a href="index.html">
+                        <div class="icon-inside">
+                            <i class="fa-solid fa-gamepad"></i>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </header>
+<!----------------------------------------- NAV BAR ----------------------------------------------->        
+
+<!----------------------------------------- BODY ----------------------------------------------->        
+        <section class="controller" id="controller">
+<!----------------------------------------- TITLE ----------------------------------------------->        
+            <div class="one-title">
+                <h1>CONTROLLER</h1>
+                <p>Control your electrocoagulation device here.</p>
+            </div>            
+<!----------------------------------------- END TITLE ----------------------------------------------->
+<!----------------------------------------- ALERTS ----------------------------------------------->        
+            <!-- MAINTENANCE -->
+            <div class="maintenance">
+                <div id="maintenance" style="display:none;">
+                    <div class="data-container">
+                        <div class="dat">
+                            <div class="des">
+                                <div class="warning">
+                                    <div class="warning-symbol">
+                                        <i class="fa-solid fa-circle-exclamation"></i>
+                                        <h5>WARNING:</h5>
+                                    </div>
+
+                                    <div class="warning-text">
+                                        <h5>ELECTRODE IS INEFFICIENT</h5>
+                                        <p>Time to change electrode</p>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END MAINTENANCE -->
+<!----------------------------------------- END ALERTS ----------------------------------------------->   
+<!----------------------------------------- DATA ----------------------------------------------->        
+            <section id="mainSupply">
+                <div class="mainSwitches">
+                    <!-- Power Supply switch -->
+                    <div class="switches">
+                        <label class="switch-label">Power Supply</label>
+                        <label class="switch" id="PSswitch">
+                            <input type="checkbox" id="powerSupplySwitch" unchecked>
+                            <span class="slider round"></span>
+                        </label>
+                        <div class="switch-description" id="switch-description1">Power Supply is OFF</div>
+                        <div class="switch-description" id="userName"></div>
+                    </div>
+                </div>
+
+                
+                <section id="mainData">
+                    <!-- GROUP 1 (PS) --> 
+                    <div id="data">
+                        <div class="data-container">
+                            <div class="dat">
+                                <div class="des">
+                                    <div class="datas">
+                                        <!-- GROUP 1 --> 
+                                        <div class="group1">
+                                            <!-- GROUP 4 --> 
+                                            <div class="group4">
+                                                <div class="datetime">
+                                                    <p>DATE & TIME:</p> <p> </p>
+                                                    <input type="text" class="inputs" id="dnt" name="dnt" readonly placeholder>
+                                                </div>
+                                            </div>
+                                            <div class="group4">
+                                                <div class="runno">
+                                                    <p>RUN #:</p> <p> </p>
+                                                    <input type="text" class="inputs" id="rn" name="rn" readonly placeholder>
+                                                </div>
+                                            </div>
+                                            <div class="group4">
+                                                <div class="cycleno">
+                                                    <p>CYCLE #:</p> <p> </p>
+                                                    <input type="text" class="inputs" id="cn" name="cn" readonly placeholder>
+                                                </div>
+                                            </div>
+                                            <div class="group4">
+                                                <div class="liters">
+                                                    <p>LITERS OF WATER:</p> <p> </p>
+                                                    <input type="text" class="inputs" id="lw" name="lw" readonly placeholder>
+                                                    <span>L</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- END GROUP 1 -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+
+                    <div id="group2">
+                        <div class="data-container">
+                            <div class="dat">
+                                <div class="des">
+                                    <div class="datas">
+                                        <!-- GROUP 2 -->
+                                        <div class="group2">
+                                            <div class="group4"> 
+                                                <div class="1turblvl">
+                                                    <p>TURBIDITY LEVEL:</p>
+                                                    <div class="turblvl">
+                                                        <table id="myTable" cellpadding="1">
+                                                            <tr>
+                                                                <th>
+                                                                    <div class="title">
+                                                                        <p>INITIAL TEST</p>
+                                                                    </div>
+                                                                </th>
+                                                                <th>
+                                                                    <div class="title">
+                                                                        <p>FINAL TEST</p> 
+                                                                    </div>
+                                                                </th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="input-details">
+                                                                        <input type="text" class="inputs" id="beforeTblvl" name="beforeTblvl" readonly placeholder>
+                                                                        <span>NTU</span>
+                                                                        <div class="rating"></div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="input-details">
+                                                                        <input type="text" class="inputs" id="afterTblvl" name="afterTblvl" readonly placeholder>
+                                                                        <span>NTU</span>
+                                                                        <div class="after-rating"></div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="group4">
+                                                <div class="phlvl">
+                                                    <p>pH LEVEL:</p> <p> </p>
+                                                    <input type="text" class="inputs" id="phlvl" name="phlvl" readonly placeholder>
+                                                    <div class="ph-rating"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- END GROUP 2 -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+
+                    <!-- Mode of Operation -->
+                    <section id="modeOperation">
+                        <!-- Mode of Operation switch  -->
+                        <div class="switches">
+                            <label class="switch-label">Mode of Operation</label>
+                            <label class="switch">
+                                <input type="checkbox"  id="modeOperationSwitch" unchecked>
+                                <span class="slider round"></span>
+                            </label>
+                            <div class="switch-description" id="switch-description3">Automatic Operation</div>
+                        </div>
+                        <!-- END Mode of Operation switch  -->
+                        <div class="automatic">
+                            <div id="group3">
+                                <div class="data-container">
+                                    <div class="dat">
+                                        <div class="des">
+                                            <div class="datas">
+                                                <!-- GROUP 2 -->
+                                                <div class="group2">
+                                                    <div class="group4">
+                                                        <div class="volt">
+                                                            <p>VOLTAGE:</p> <p> </p>
+                                                            <input type="text" class="inputs" id="vl" name="vl" readonly placeholder>
+                                                            <span>V</span>
+                                                        </div>
+    
+                                                    </div>
+                                                    <div class="group4">
+                                                        <div class="tt">
+                                                            <p>TREATMENT TIME:</p> <p> </p>
+                                                            <input type="text" class="inputs" id="ttl" name="ttl" readonly placeholder>
+                                                            <span>mins</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- END GROUP 2 -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="manual">
+                            <!-- Buttons -->   
+                            <div id="buttons">
+                                <div class="buttons-container">
+                                    <div class="but">
+                                        <div class="des">
+                                            <!-- Voltage button -->
+                                            <div class="voltage">
+                                                <label class="label">Electric Potential Difference</label>
+                                                <div class="label-description">in volt</div>
+                                                <div class="voltButton">
+                                                    <div class="circle" id="addVolt">
+                                                        <i class="fa-solid fa-plus"></i>
+                                                    </div>
+                                                    <div class="number">
+                                                        <span id="numVolt">01</span>
+                                                    </div>
+                                                    <div class="circle" id="minusVolt">
+                                                        <i class="fa-solid fa-minus"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="buttons-container">
+                                    <div class="but">
+                                        <div class="des">
+                                            <!-- Time button -->
+                                            <div class="time">
+                                                <label class="label">Treatment Time</label>
+                                                <div class="label-description">in minutes</div>
+                                                <div class="timeButton">
+                                                    <div class="circle" id="addTime">
+                                                        <i class="fa-solid fa-plus"></i>
+                                                    </div>
+                                                    <div class="number" >
+                                                        <span id="numTime">01</span>
+                                                    </div>
+                                                    <div class="circle" id="minusTime">
+                                                        <i class="fa-solid fa-minus"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </section>
+
+                </section>
+
+            </section>
+<!----------------------------------------- END DATA ----------------------------------------------->        
+<!----------------------------------------- ALERTS ----------------------------------------------->        
+            <div class="alert" id="alert-cycle" style="display:none;">
+                <div id="alert">
+                    <div class="data-container">
+                        <div class="dat">
+                            <div class="des">
+                                <div class="alert">
+                                    <div class="alert-text">
+                                        <p>DATA IS RESET FROM CYCLE</p>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="alert" id="alert-run" style="display:none;">
+                <div id="alert">
+                    <div class="data-container">
+                        <div class="dat">
+                            <div class="des">
+                                <div class="alert">
+                                    <div class="alert-text">
+                                        <p>DATA IS RESET FROM RUN</p>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<!----------------------------------------- END ALERTS ----------------------------------------------->        
+<!----------------------------------------- SUBMIT BUTTONS ----------------------------------------------->
+            <div class="submitButtons">
+                <div id="cycleBtns">
+                    <div class="cycleButton">
+                        <span id="cycleBtn">RESET NEW CYCLE</span>
+                    </div>
+                </div>
+                <div id="runBtns">
+                    <div class="runButton">
+                        <span id="runBtn">RESET NEW RUN</span>
+                    </div>
+                </div>
+            </div>        
+<!----------------------------------------- END SUBMIT BUTTONS ----------------------------------------------->        
+<!----------------------------------------- ACTION BUTTONS ----------------------------------------------->        
+            <section id="actionBts">
+                <div class="controls">
+                    <h3>ACTION BUTTONS</h3>
+                    <div class="actionBtns">
+                        <div class="butts">
+                            <!-- start button -->
+                            <div class="start">
+                                <label class="label">START</label>
+                                <div class="startbutton">
+                                    <div class="startbutton">
+                                        <button id="start" class="fa-solid fa-play"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="butts">
+                            <!-- pause button -->
+                            <div class="pause">
+                                <label class="label">PAUSE</label>
+                                <div class="pausebutton">
+                                    <div class="pausebutton">
+                                        <button id="pause" class="fa-solid fa-pause"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="butts">
+                            <!-- stop button -->
+                            <div class="stop">
+                                <label class="label">STOP</label>
+                                <div class="stopbutton">
+                                    <div class="stopbutton">
+                                        <button id="stop" class="fa-solid fa-stop"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>      
+<!----------------------------------------- END ACTION BUTTONS ----------------------------------------------->               
+        </section>
+<!----------------------------------------- END BODY ----------------------------------------------->        
+       
+        <script>
+            // ------------------------- SWITCH LABELS DESCRIPTION -------------------------------------------------------------------------------
+                const powerSupplySwitch = document.getElementById('powerSupplySwitch');
+                const psSwitchDescription = document.getElementById('switch-description1');
+
+                const modeOperationSwitch = document.getElementById('modeOperationSwitch');
+                const mooSwitchDescription = document.getElementById('switch-description3');
+
+                // JavaScript code to update switch descriptions
+                    powerSupplySwitch.addEventListener('change', function() {
+                        if (this.checked) {
+                            psSwitchDescription.textContent = 'Power Supply is ON';
+                        } else {
+                            psSwitchDescription.textContent = 'Power Supply is OFF';
+                        }
+                    });
+                    
+                    modeOperationSwitch.addEventListener('change', function() {
+                        if (this.checked) {
+                            mooSwitchDescription.textContent = 'Manual Operation';
+                        } else {
+                            mooSwitchDescription.textContent = 'Automatic Operation';
+                        }
+                    });
+            // ------------------------- DATE & TIME -------------------------------------------------------------------------------  
+                const dntInput = document.getElementById("dnt");
+                const d = new Date();
+
+                // Format the date to a readable string
+                const formattedDateTime = d.toLocaleString(); // Adjust the formatting as needed
+                dntInput.value = formattedDateTime;
+                // Set the formatted date and time into the input field
+
+            // ------------------------- INPUT FIELD WIDTH -------------------------------------------------------------------------------
+                // Function to adjust input field width based on its content
+                function adjustInputWidth(input) {
+                    input.style.width = (input.value.length + 1) * 8 + 'px'; // Adjust the multiplier as needed
+                }
+                
+                // Get all input elements with class "inputs"
+                const inputs = document.querySelectorAll('.inputs');
+                
+                // Loop through each input element and attach an input event listener
+                inputs.forEach(input => {
+                    // Add input event listener
+                    input.addEventListener('input', function() {
+                        adjustInputWidth(this);
+                    });
+                
+                    // Initially adjust input width
+                    adjustInputWidth(input);
+                });
+
+            // -------------------------------- ACTION BUTTONS ------------------------------------------------------------
+                const startButton = document.getElementById('start');
+                const pauseButton = document.getElementById('pause');
+                const stopButton = document.getElementById('stop');
+
+                startButton.addEventListener('click', () => {
+                    startButton.classList.toggle('active');
+                    pauseButton.classList.remove('active');
+                    stopButton.classList.remove('active');
+                });
+
+                pauseButton.addEventListener('click', () => {
+                    pauseButton.classList.toggle('active');
+                    startButton.classList.remove('active');
+                    stopButton.classList.remove('active');
+                });
+
+                stopButton.addEventListener('click', () => {
+                    stopButton.classList.toggle('active');
+                    startButton.classList.remove('active');
+                    pauseButton.classList.remove('active');
+                    setTimeout(() => {
+                        stopButton.classList.remove('active');
+                    }, 500);
+                });
+
+            // -------------------------------- SUBMIT ALERTS ------------------------------------------------------------  
+                // Get the submit button element
+                const cycleButton = document.getElementById("cycleBtns"); // Replace "submit-button" with your actual button ID
+
+                // Add a click event listener to the button
+                cycleButton.addEventListener("click", () => {
+                    const alertCElement = document.getElementById("alert-cycle");
+                    alertCElement.style.display = "block";
+                    setTimeout(() => {
+                        alertCElement.style.display = "none";
+                    }, 3000); // Hide after 3 seconds
+
+                    // Display the alert message (optional)
+                    // alert("Data saved!");
+
+                    let cnValue = parseInt(cnInput.value, 10) || 0; // Handle potential non-numeric input
+                    cnValue++;
+                    cnInput.value = cnValue;
+                });
+
+                // Get the submit button element
+                const runButton = document.getElementById("runBtns"); // Replace "submit-button" with your actual button ID
+
+                // Add a click event listener to the button
+                runButton.addEventListener("click", () => {
+                    const alertRElement = document.getElementById("alert-run");
+                    alertRElement.style.display = "block";
+                    setTimeout(() => {
+                        alertRElement.style.display = "none";
+                    }, 3000); // Hide after 3 seconds
+
+                    // Display the alert message (optional)
+                    // alert("Data saved!");
+                    let rnValue = parseInt(rnInput.value, 10) || 0; // Handle potential non-numeric input
+                    rnValue++;
+                    rnInput.value = rnValue;
+                    cnInput.value = 1;
+                });
+            // -------------------------------- RATINGS ------------------------------------------------------------  
+
+                const beforeRatingElement = document.querySelector(".rating");
+                const afterRatingElement = document.querySelector(".after-rating");
+                const phRatingElement = document.querySelector(".ph-rating");
+                const lwInput = document.getElementById("lw");
+                const cnInput = document.getElementById("cn");
+                const rnInput = document.getElementById("rn");
+                const btlInput = document.getElementById('beforeTblvl');
+                const atlInput = document.getElementById('afterTblvl');
+                const pHInput = document.getElementById('phlvl');
+
+
+                const initialValue = btlInput.value;
+                const finalValue = atlInput.value;
+                const phValue = pHInput.value;
+
+                // Update ratings based on Firebase data (assuming beforeTurbidity, afterTurbidity, and phLevel are available)
+                function updateRatings() {
+                    // Before Turbidity Rating
+                    if (initialValue > 50 && initialValue <= 200) {
+                    beforeRatingElement.textContent = "DIRTY";
+                    beforeRatingElement.classList.add("bad");
+                    } else if (initialValue > 5 && initialValue <= 150) {
+                    beforeRatingElement.textContent = "CLOUDY";
+                    beforeRatingElement.classList.add("fair");
+                    } else {
+                    beforeRatingElement.textContent = "CLEAN";
+                    beforeRatingElement.classList.add("good");  
+                    }
+
+                    // After Turbidity Rating (similar logic)
+                    if (finalValue > 50 && finalValue <= 200) {
+                    afterRatingElement.textContent = "DIRTY";
+                    afterRatingElement.classList.add("bad");
+                    } else if (finalValue > 5 && finalValue <= 150) {
+                    afterRatingElement.textContent = "CLOUDY";
+                    afterRatingElement.classList.add("fair");
+                    } else {
+                    afterRatingElement.textContent = "CLEAN";
+                    afterRatingElement.classList.add("good");
+                    }
+
+                    // pH Rating (similar logic)
+                    if (phValue >= 10) {
+                    phRatingElement.textContent = "BAD";
+                    phRatingElement.classList.add("bad");
+                    } else if (phValue >= 6) {
+                    phRatingElement.textContent = "GOOD";
+                    phRatingElement.classList.add("good");
+                    } else {
+                    phRatingElement.textContent = "BAD";
+                    phRatingElement.classList.add("bad");
+                    }
+                }
+                updateRatings()
+            // -------------------------------- MAINTENANCE ALERTS ------------------------------------------------------------  
+                // Get the afterTurbidityInput element
+                const alertRElement = document.getElementById("maintenance");
+                function alert(){
+                    if (atlInput.value > 150) {
+                        // Get the alert element
+                        
+
+                        // Show the alert element
+                        alertRElement.style.display = "block";
+
+
+                    } else {
+                        alertRElement.style.display = "none";
+                    }
+                }
+                alert()
+
+            
+            // ------------------------- MODE OF OPERATION BUTTONS -------------------------------------------------------------------------------
+                const manualSection = document.querySelector('.manual');
+                const automaticSection = document.querySelector('.automatic');
+
+                modeOperationSwitch.addEventListener('change', function() {
+                    if (this.checked) {
+                    manualSection.style.display = 'block';
+                    automaticSection.style.display = 'none';
+                    } else {
+                    manualSection.style.display = 'none';
+                    automaticSection.style.display = 'block';
+                    }
+                });
+
+                // Trigger the change event initially to set the initial state
+                modeOperationSwitch.dispatchEvent(new Event('change'));
+
+                const numVolt = document.getElementById('numVolt');
+                const addVolt = document.getElementById('addVolt');
+                const minusVolt = document.getElementById('minusVolt');
+
+                const numTime = document.getElementById('numTime');
+                const addTime = document.getElementById('addTime');
+                const minusTime = document.getElementById('minusTime');
+
+                const submitBtn = document.getElementById('submitBtn');
+                
+                const vlInput = document.getElementById('vl');
+                const ttlInput = document.getElementById('ttl');
+                
+                let voltValue = 0;
+                let timeValue = 0;
+                
+                function updateNumber(element, value) {
+                    element.textContent = value < 10 ? '0' + value : value;
+                }
+                
+                addVolt.addEventListener('click', () => {
+                    if (voltValue < 24) {
+                    voltValue+=8;
+                    updateNumber(numVolt, voltValue);
+                    }
+                });
+                
+                minusVolt.addEventListener('click', () => {
+                    if (voltValue > 1) {
+                    voltValue-=8;
+                    updateNumber(numVolt, voltValue);
+                    }
+                });
+                
+                addTime.addEventListener('click', () => {
+                    if (timeValue < 60) {
+                    timeValue+=10;
+                    updateNumber(numTime, timeValue);
+                    }
+                });
+                
+                minusTime.addEventListener('click', () => {
+                    if (timeValue > 1) {
+                    timeValue-=10;
+                    updateNumber(numTime, timeValue);
+                    }
+                });
+
+                // Function to determine voltage and time based on turbidity level
+                function calculateTurbidityControl() {
+                    // Get input value
+                    var turbidityInput = parseInt(initialValue);
+
+                    // Default values
+                    var voltage = 0;
+                    var time = 0;
+
+                    // Determine voltage and time based on turbidity level
+                    if (turbidityInput >= 1 && turbidityInput <= 70) {
+                        voltage = 8;
+                        time = 20;
+                    } else if (turbidityInput > 70 && turbidityInput <= 150) {
+                        voltage = 16;
+                        time = 40;
+                    } else if (turbidityInput > 150) {
+                        voltage = 24;
+                        time = 60;
+                    } else if (turbidityInput <= 0) {
+                        voltage = 0;
+                        time = 0;
+                    }
+
+                    // Display assigned voltage and time
+                    document.getElementById("vl").value = voltage;
+                    document.getElementById("ttl").value = time;
+
+                    const vl = document.getElementById("vl");
+                    const ttl = document.getElementById("ttl");
+                }
+
+                // Event listener for input change
+                document.getElementById("beforeTblvl").addEventListener("input", calculateTurbidityControl);
+
+                // Initial calculation
+                calculateTurbidityControl();
+
+            // -------------------------------- INPUT ------------------------------------------------------------  
+                cnInput.value = 1;
+                rnInput.value = 1;
+                lwInput.value = 9.46355;
+                adjustInputWidth(lwInput);
+                adjustInputWidth(btlInput);
+                adjustInputWidth(atlInput);
+                adjustInputWidth(pHInput);
+                adjustInputWidth(vl);
+                adjustInputWidth(ttl);
+
+
+
+        </script>
+    </body>
+</html>

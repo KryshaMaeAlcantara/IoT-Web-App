@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>IoT of EC Process</title>
+        <!-- font kanit link  -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter">
+
+        <!-- custom css file link  -->
+        <link rel="stylesheet" href="./css/style.css">
+
+        <!-- font awesome cdn link  -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+        <!-- Include Chart.js -->
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+        <!-- Include Firebase SDK -->
+        <script type="module" src="./firebase.js"></script>
+    </head>
+    <body>
+        <header class="navbar" id="navbar">
+
+            <div class="logo-and-welcome">
+                <a href="index.html" class="logo"><img src="logo.png" alt="Logo"></a>
+            </div>
+            <ul>
+                <li>
+                    <a href="index.html">
+                        <div class="icon-inside">
+                            <i class="fa-solid fa-gamepad"></i>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="dashboard.html">
+                        <div class="icon-inside">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            
+
+        </header>
+
+        
+    <!-- DASHBOARD -->
+        <section class="history" id="dashboard">
+            <h1>DASHBOARD</h1>
+            <p>View your data from your previous activity</p>
+            <div class="ul">
+                <li>
+                  <a href="#">
+                    <div class="name">DAY</div>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <div class="name">WEEK</div>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <div class="name">MONTH</div>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <div class="name">6 MONTHS</div>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <div class="name">YEAR</div>
+                  </a>
+                </li>
+            </div>
+
+            <div class="chart">
+                <li>
+                    <a href="">
+                        <div class="chartCard">
+                            <div class="chartBox">
+                              <canvas id="myChart"></canvas>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            </div>
+
+            <div class="table">
+                <li>
+                    <a>
+                      <div class="summary"><h2>SUMMARY</h6></div>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                      <div class="date"><h4>DATE</h2></div>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <table id="customers">
+                            <tr>
+                               <th>RUN</th>
+                               <th>VOLTAGE</th>
+                               <th>TREATMENT TIME</th>
+                               <th>INITIAL TURBIDITY LEVEL</th>
+                               <th>FINAL TURBIDITY LEVEL</th>
+                             </tr>
+                             <tr>
+                               <td>1</td>
+                               <td>60 V</td>
+                               <td>60 mins</td>
+                               <td>
+                                 <div class="progress-bar">
+                                   <span class="html">375 NTU</span>
+                                 </div>
+                               </td>
+                               <td>
+                                 <div class="progress-bar">
+                                   <span class="css">20 NTU</span>
+                                 </div>
+                               </td> 
+                             </tr>       
+                        </table>
+                    </a>
+                </li>
+            </div>
+            
+
+
+        </section>
+
+
+
+        <!-- custom js file link  -->
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+        <script>
+        // setup 
+        const data = {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          datasets: [{
+            label: 'INITIAL',
+            data: [18, 12, 6, 9, 12, 3, 9],
+            backgroundColor: 'rgba(81, 57, 24, 0.2)',
+            borderColor: ' rgba(81, 57, 24, 1)',
+            borderWidth: 1
+          },
+          {
+            label: 'FINAL',
+            data: [10, 14, 8, 11, 9, 5, 13],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+          }]
+        };
+    
+        // config 
+        const config = {
+          type: 'line',
+          data,
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        };
+    
+        // render init block
+        const myChart = new Chart(
+          document.getElementById('myChart'),
+          config
+        );
+    
+        // Instantly assign Chart.js version
+        const chartVersion = document.getElementById('chartVersion');
+        chartVersion.innerText = Chart.version;
+        </script>
+    
+    </body>
+</html>
+    

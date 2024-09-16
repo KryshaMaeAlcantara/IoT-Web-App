@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <script src="qrcode.min.js"></script>
+</head>
+<body>
+    <div id="qrcode"></div>
+    <button id="downloadBtn">Download QR Code</button>
+
+    <script>
+        // Generate QR Code
+        var qrCode = new QRCode(document.getElementById("qrcode"), {
+            width: 200,
+            height: 200
+        });
+
+        // Generate QR Code content
+        var qrCodeContent = "https://electrocoagulation-system.web.app?email=user1%40gmail.com&password=%3FP%40ssw0rd123%3F";
+
+        // Set QR Code content
+        qrCode.makeCode(qrCodeContent);
+
+        // Download QR Code
+        document.getElementById("downloadBtn").addEventListener("click", function () {
+            var qrCodeImage = document.getElementById("qrcode").querySelector("img");
+            var qrCodeDataURL = qrCodeImage.src;
+            var downloadLink = document.createElement("a");
+            downloadLink.href = qrCodeDataURL;
+            downloadLink.download = "qr_code.png";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        });
+    </script>
+</body>
+</html>

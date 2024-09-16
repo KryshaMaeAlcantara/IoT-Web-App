@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="theme-color" content="#486189">
+        <title>IoT of EC Process</title>
+        <!-- font kanit link  -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter">
+
+        <!-- custom css file link  -->
+        <link rel="stylesheet" href="./css/style.css">
+
+        <!-- font awesome cdn link  -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link rel="manifest" href="manifest.json">
+        <link rel="icon" href="logo.png" type="image/icon type">
+        <link rel="apple-touch-icon" href="images/logo192.png">
+        <script src="js/index.js"></script>
+
+
+    </head>
+    <body>
+<!----------------------------------------- NAV BAR ----------------------------------------------->        
+        <header class="navbar" id="navbar">
+
+            <div class="logo-and-welcome">
+                <a href="index (2).html" class="logo"><img src="logo.png" alt="Logo"></a>
+            </div>
+            <ul>
+                <li>
+                    <a href="index.html">
+                        <div class="icon-inside">
+                            <i class="fa-solid fa-gamepad"></i>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="dashboard.html">
+                        <div class="icon-inside">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </header>
+<!----------------------------------------- NAV BAR ----------------------------------------------->        
+
+<!----------------------------------------- BODY ----------------------------------------------->        
+        <section class="controller" id="controller">
+<!----------------------------------------- TITLE ----------------------------------------------->        
+            <div class="one-title">
+                <h1>CONTROLLER</h1>
+                <p>Control your electrocoagulation device here.</p>
+            </div>            
+<!----------------------------------------- END TITLE ----------------------------------------------->
+<!----------------------------------------- ALERTS ----------------------------------------------->        
+            <!-- MAINTENANCE -->
+            <div class="maintenance">
+                <div id="maintenance" style="display:none;">
+                    <div class="data-container">
+                        <div class="dat">
+                            <div class="des">
+                                <div class="warning">
+                                    <div class="warning-symbol">
+                                        <i class="fa-solid fa-circle-exclamation"></i>
+                                        <h5>WARNING:</h5>
+                                    </div>
+
+                                    <div class="warning-text">
+                                        <h5>ELECTRODE IS INEFFICIENT</h5>
+                                        <p>Time to change electrode</p>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END MAINTENANCE -->
+<!----------------------------------------- END ALERTS ----------------------------------------------->   
+<!----------------------------------------- DATA ----------------------------------------------->        
+            <section id="mainSupply">
+                <div class="mainSwitches">
+                    <!-- Power Supply switch -->
+                    <div class="switches">
+                        <div class="switch-description" id="userName"></div>
+                    </div>
+                </div>
+
+                
+                <section id="mainData">
+                    <!-- GROUP 1 (PS) --> 
+                    <div id="data">
+                        <div class="data-container">
+                            <div class="dat">
+                                <div class="des">
+                                    <div class="datas">
+                                        <!-- GROUP 1 --> 
+                                        <div class="group1">
+                                            <!-- GROUP 4 --> 
+                                            <div class="group4">
+                                                <div class="datetime">
+                                                    <p>DATE & TIME:</p> <p> </p>
+                                                    <input type="text" class="inputs" id="dnt" name="dnt" readonly placeholder>
+                                                </div>
+                                            </div>
+                                            <div class="group4">
+                                                <div class="runno">
+                                                    <p>RUN #:</p> <p> </p>
+                                                    <input type="text" class="inputs" id="rn" name="rn" readonly placeholder>
+                                                </div>
+                                            </div>
+                                            <div class="group4">
+                                                <div class="cycleno">
+                                                    <p>CYCLE #:</p> <p> </p>
+                                                    <input type="text" class="inputs" id="cn" name="cn" readonly placeholder>
+                                                </div>
+                                            </div>
+                                            <div class="group4">
+                                                <div class="liters">
+                                                    <p>LITERS OF WATER:</p> <p> </p>
+                                                    <input type="text" class="inputs" id="lw" name="lw" readonly placeholder>
+                                                    <span>L</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- END GROUP 1 -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+
+                    <div id="group2">
+                        <div class="data-container">
+                            <div class="dat">
+                                <div class="des">
+                                    <div class="datas">
+                                        <!-- GROUP 2 -->
+                                        <div class="group2">
+                                            <div class="group4"> 
+                                                <div class="1turblvl">
+                                                    <p>TURBIDITY LEVEL:</p>
+                                                    <div class="turblvl">
+                                                        <table id="myTable" cellpadding="1">
+                                                            <tr>
+                                                                <th>
+                                                                    <div class="title">
+                                                                        <p>INITIAL TEST</p>
+                                                                    </div>
+                                                                </th>
+                                                                <th>
+                                                                    <div class="title">
+                                                                        <p>FINAL TEST</p> 
+                                                                    </div>
+                                                                </th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="input-details">
+                                                                        <input type="text" class="inputs" id="beforeTblvl" name="beforeTblvl" readonly placeholder>
+                                                                        <span>NTU</span>
+                                                                        <div class="rating"></div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="input-details">
+                                                                        <input type="text" class="inputs" id="afterTblvl" name="afterTblvl" readonly placeholder>
+                                                                        <span>NTU</span>
+                                                                        <div class="after-rating"></div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="group4">
+                                                <div class="phlvl">
+                                                    <p>pH LEVEL:</p> <p> </p>
+                                                    <input type="text" class="inputs" id="phlvl" name="phlvl" readonly placeholder>
+                                                    <div class="ph-rating"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- END GROUP 2 -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+
+                    <!-- Mode of Operation -->
+                    <section id="modeOperation">
+                        <!-- Mode of Operation switch  -->
+                        <div class="switches">
+                            <label class="switch-label">Mode of Operation</label>
+                            <label class="switch">
+                                <input type="checkbox"  id="modeOperationSwitch" unchecked>
+                                <span class="slider round"></span>
+                            </label>
+                            <div class="switch-description" id="switch-description3">Automatic Operation</div>
+                        </div>
+                        <!-- END Mode of Operation switch  -->
+                        <div class="automatic">
+                            <div id="group3">
+                                <div class="data-container">
+                                    <div class="dat">
+                                        <div class="des">
+                                            <div class="datas">
+                                                <!-- GROUP 2 -->
+                                                <div class="group2">
+                                                    <div class="group4">
+                                                        <div class="volt">
+                                                            <p>VOLTAGE:</p> <p> </p>
+                                                            <input type="text" class="inputs" id="vl" name="vl" readonly placeholder>
+                                                            <span>V</span>
+                                                        </div>
+    
+                                                    </div>
+                                                    <div class="group4">
+                                                        <div class="tt">
+                                                            <p>TREATMENT TIME:</p> <p> </p>
+                                                            <input type="text" class="inputs" id="ttl" name="ttl" readonly placeholder>
+                                                            <span>mins</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- END GROUP 2 -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="manual">
+                            <!-- Buttons -->   
+                            <div id="buttons">
+                                <div class="buttons-container">
+                                    <div class="but">
+                                        <div class="des">
+                                            <!-- Voltage button -->
+                                            <div class="voltage">
+                                                <label class="label">Electric Potential Difference</label>
+                                                <div class="label-description">in volt</div>
+                                                <div class="voltButton">
+                                                    <div class="circle" id="addVolt">
+                                                        <i class="fa-solid fa-plus"></i>
+                                                    </div>
+                                                    <div class="number">
+                                                        <span id="numVolt">01</span>
+                                                    </div>
+                                                    <div class="circle" id="minusVolt">
+                                                        <i class="fa-solid fa-minus"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="buttons-container">
+                                    <div class="but">
+                                        <div class="des">
+                                            <!-- Time button -->
+                                            <div class="time">
+                                                <label class="label">Treatment Time</label>
+                                                <div class="label-description">in minutes</div>
+                                                <div class="timeButton">
+                                                    <div class="circle" id="addTime">
+                                                        <i class="fa-solid fa-plus"></i>
+                                                    </div>
+                                                    <div class="number" >
+                                                        <span id="numTime">01</span>
+                                                    </div>
+                                                    <div class="circle" id="minusTime">
+                                                        <i class="fa-solid fa-minus"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </section>
+
+                </section>
+
+            </section>
+<!----------------------------------------- END DATA ----------------------------------------------->        
+<!----------------------------------------- ALERTS ----------------------------------------------->        
+            <div class="alert" id="alert-submit" style="display:none;">
+                <div id="alert">
+                    <div class="data-container">
+                        <div class="dat">
+                            <div class="des">
+                                <div class="alert">
+                                    <div class="alert-text">
+                                        <p>DATA IS SAVED</p>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="alert" id="alert-cycle" style="display:none;">
+                <div id="alert">
+                    <div class="data-container">
+                        <div class="dat">
+                            <div class="des">
+                                <div class="alert">
+                                    <div class="alert-text">
+                                        <p>DATA IS RESET FROM CYCLE</p>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="alert" id="alert-run" style="display:none;">
+                <div id="alert">
+                    <div class="data-container">
+                        <div class="dat">
+                            <div class="des">
+                                <div class="alert">
+                                    <div class="alert-text">
+                                        <p>DATA IS RESET FROM RUN</p>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<!----------------------------------------- END ALERTS ----------------------------------------------->        
+<!----------------------------------------- SUBMIT BUTTONS ----------------------------------------------->
+            <div class="submitButtons">
+                <div id="submitBtns">
+                    <div class="submitButton">
+                        <span type="submit" id="submitBtn">SUBMIT</span>
+                    </div>
+                </div>
+                <div id="cycleBtns">
+                    <div class="cycleButton">
+                        <span id="cycleBtn">RESET NEW CYCLE</span>
+                    </div>
+                </div>
+                <div id="runBtns">
+                    <div class="runButton">
+                        <span id="runBtn">RESET NEW RUN</span>
+                    </div>
+                </div>
+            </div>        
+<!----------------------------------------- END SUBMIT BUTTONS ----------------------------------------------->        
+<!----------------------------------------- ACTION BUTTONS ----------------------------------------------->        
+            <section id="actionBts">
+                <div class="controls">
+                    <h3>ACTION BUTTONS</h3>
+                    <div class="actionBtns">
+                        <div class="butts">
+                            <!-- start button -->
+                            <div class="start">
+                                <label class="label">START</label>
+                                <div class="startbutton">
+                                    <div class="startbutton">
+                                        <button id="start" class="fa-solid fa-play"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="butts">
+                            <!-- pause button -->
+                            <div class="pause">
+                                <label class="label">PAUSE</label>
+                                <div class="pausebutton">
+                                    <div class="pausebutton">
+                                        <button id="pause" class="fa-solid fa-pause"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="butts">
+                            <!-- stop button -->
+                            <div class="stop">
+                                <label class="label">STOP</label>
+                                <div class="stopbutton">
+                                    <div class="stopbutton">
+                                        <button id="stop" class="fa-solid fa-stop"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>      
+<!----------------------------------------- END ACTION BUTTONS ----------------------------------------------->               
+        </section>
+<!----------------------------------------- END BODY ----------------------------------------------->        
+       
+        <script src="js/script.js"></script>
+        <script type="module" src="js/firebase.js"></script>
+    </body>
+</html>

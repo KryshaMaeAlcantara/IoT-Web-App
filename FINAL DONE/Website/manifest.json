@@ -1,0 +1,21 @@
+{
+    "name": "iot electro",
+    "short_name": "iot electro",
+    "start_url": ".",
+    "background_color": "#eeeeee",
+    "theme_color": "#486189",
+    "display": "standalone",
+    "icons":[
+        {
+          "src": "images/logo192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        },
+        {
+          "src": "images/logo512.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        }
+        
+    ]
+}

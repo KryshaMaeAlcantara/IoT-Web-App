@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart and Table from Firebase RTDB</title>
+    <!-- Include Chart.js -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+   <style>
+    /*----------------------------- CHART -----------------------------*/
+.chart{
+    position: relative;
+    margin: 0;
+    margin-top: 20px;
+    padding: 20px 0;
+    background: white;
+    display: block;
+    border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.3);
+    justify-content: space-between;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.chart li{
+    list-style: none;
+    text-align: center;
+    display: block;
+}
+
+.chart li:last-child{
+    border-right: none;
+}
+
+.chart li a{
+    text-decoration: none;
+    padding: 0 10px;
+    display: block;
+    font-size: 11px;
+}
+
+.chart li a .date{
+    text-align: left;
+}
+
+/*----------------------------- SUMMARY TABLE -----------------------------*/
+.table{
+    position: relative;
+    margin: 0;
+    margin-top: 20px;
+    padding: 20px 0;
+    background: white;
+    display: block;
+    border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.3);
+    justify-content: space-between;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.table li{
+    list-style: none;
+    text-align: center;
+    display: block;
+}
+
+.table li:last-child{
+    border-right: none;
+}
+
+.table li a{
+    text-decoration: none;
+    padding: 0 10px;
+    display: block;
+    font-size: 11px;
+}
+
+.table li a .date{
+    text-align: left;
+}
+
+#customers .progress-bar{
+    width: 100%;
+    height: 15px;
+    background-color: #ddd;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+#customers .progress-bar span.css{
+    position: absolute;
+    height: 100%;
+    border-radius: 10px;
+    width: 50%;
+    background-color: #486189;
+    font-size: 10px;
+    text-align: center;
+    color: white;
+    left: 1%; /* Center horizontally */
+}
+
+#customers span.html {
+    position: absolute;
+    height: 100%;
+    border-radius: 10px;
+    width: 90%;
+    background-color: #513918;
+    font-size: 10px;
+    text-align: center;
+    color: white;
+    left: 1%; /* Center horizontally */
+}
+
+#customers th, td{
+    table-layout: fixed;
+}
+
+   </style>
+    
+</head>
+<body>
+    <!-- Chart -->
+    <div class="chart">
+        <li>
+            <a href="">
+                <div class="chartCard">
+                    <div class="chartBox">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+            </a>
+        </li>
+    </div>
+
+    <!-- Table -->
+    <div class="table">
+        <li>
+            <a>
+                <div class="summary"><h2>SUMMARY</h2></div>
+            </a>
+        </li>
+        <li>
+            <a>
+                <div class="date"><h4>DATE</h4></div>
+            </a>
+        </li>
+        <li>
+            <a>
+                <table>
+                  <thead>
+                    <tr>
+                        <th>Run</th>
+                        <th>Cycle</th>
+                        <th>Voltage</th>
+                        <th>Treatment Time</th>
+                        <th>After Turbidity Level</th>
+                        <th>Before Turbidity Level</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dataTable">
+                    <!-- Data will be populated here -->
+                  </tbody>
+                    
+                </table>
+            </a>
+        </li>
+    </div>
+    
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getDatabase, set, ref, get, child, update} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+
+        const firebaseConfig = {
+        apiKey: "AIzaSyDG_NeXS3omKKF5bIMT9ebLkZsVb86drCw",
+        authDomain: "electrocoagulation-system.firebaseapp.com",
+        databaseURL: "https://electrocoagulation-system-default-rtdb.firebaseio.com",
+        projectId: "electrocoagulation-system",
+        storageBucket: "electrocoagulation-system.appspot.com",
+        messagingSenderId: "906878973597",
+        appId: "1:906878973597:web:c410e43d2160e3ea4fc674",
+        measurementId: "G-D7K8L0ZFKF"
+        };
+
+    // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Fetch data from Firebase RTDB
+        const mainSupplyRef = ref(db, '/mainSupply/3');
+        get(mainSupplyRef).then((snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                const labels = [];
+                const afterTurbidityLevels = [];
+                const beforeTurbidityLevels = [];
+
+                // Populate table and chart data
+                Object.values(data).forEach(entry => {
+                    Object.entries(entry).forEach(([timestamp, values]) => {
+                        // Convert timestamp to Date object
+                        const date = new Date(timestamp.replace(',', '')); // Remove comma from timestamp
+                        labels.push(date);
+                        afterTurbidityLevels.push(values.afterTurbidityLevel);
+                        beforeTurbidityLevels.push(values.beforeTurbidityLevel);
+
+                        // Add data to table
+                        const tableRow = document.createElement('tr');
+                        tableRow.innerHTML = `
+                            <td>${values.run}</td>
+                            <td>${values.cycle}</td>
+                            <td>${values.voltage}</td>
+                            <td>${values.treatmentTime}</td>
+                            <td>${values.afterTurbidityLevel}</td>
+                            <td>${values.beforeTurbidityLevel}</td>
+                        `;
+                        document.getElementById('dataTable').appendChild(tableRow);
+                    });
+                });
+
+                // Create chart
+                const ctx = document.getElementById('myChart').getContext('2d');
+                const myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'FINAL',
+                            data: afterTurbidityLevels,
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }, {
+                            label: 'Before Turbidity Level',
+                            data: beforeTurbidityLevels,
+                            backgroundColor: 'rgba(81, 57, 24, 0.2)',
+                            borderColor: ' rgba(81, 57, 24, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                type: 'time',
+                                time: {
+                                    parser: 'MM/DD/YYYY, HH:mm:ss', // Adjust the parser according to the date format from Firebase
+                                    tooltipFormat: 'll HH:mm:ss',
+                                    unit: 'hour',
+                                    displayFormats: {
+                                        hour: 'HH' // Display only the hour part
+                                    }
+                                },
+                                ticks: {
+                                    autoSkip: true,
+                                    maxTicksLimit: 7, // Limit the maximum number of ticks displayed on the x-axis
+                                    maxRotation: 0, // Rotate the labels
+                                    minRotation: 0
+                                },
+                                unitStepSize: 2 // Show labels once every two hours
+                            },
+                            y: {
+                                beginAtZero: true
+
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.log('No data available');
+            }
+        }).catch((error) => {
+            console.error('Error fetching data:', error);
+        });
+
+    </script>
+</body>
+</html>
